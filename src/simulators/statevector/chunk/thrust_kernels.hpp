@@ -28,6 +28,22 @@ DISABLE_WARNING_POP
 
 #include "misc/wrap_thrust.hpp"
 
+// Compatibility shim: thrust::unary_function and thrust::binary_function
+// were removed in Thrust 2.x (bundled with CUDA 12+). Restore them here.
+namespace thrust {
+  template<typename Arg, typename Result>
+  struct unary_function {
+    typedef Arg argument_type;
+    typedef Result result_type;
+  };
+  template<typename Arg1, typename Arg2, typename Result>
+  struct binary_function {
+    typedef Arg1 first_argument_type;
+    typedef Arg2 second_argument_type;
+    typedef Result result_type;
+  };
+}
+
 #include <algorithm>
 #include <array>
 #include <cmath>
